@@ -34,3 +34,46 @@
         <div class="mb-3">
             <label for="costo" class="form-label">Costo</label>
             <input type="number" step="0.01" class="form-control" id="costo" name="costo" required>
+        </div>
+        <div class="mb-3">
+            <label for="file" class="form-label">Imagen</label>
+            <input type="file" class="form-control" id="file" name="file" required>
+        </div>
+        <!-- 🔽 ESTE ES EL BOTÓN QUE ENVÍA -->
+        <button type="submit" class="btn btn-primary">Cargar</button>
+    </form>
+
+    <!-- Acá se muestra la respuesta -->
+    <div id="respuesta" class="mt-4"></div>
+</div>
+
+<script>
+document.getElementById('producto-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    try {
+        const response = await fetch('https://almacen-qr.onrender.com/productos/', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            document.getElementById('respuesta').innerHTML = `<div class="alert alert-success">✅ Producto guardado correctamente</div>`;
+            console.log('Producto creado:', result);
+        } else {
+            document.getElementById('respuesta').innerHTML = `<div class="alert alert-danger">❌ Error: ${JSON.stringify(result)}</div>`;
+            console.error('Error:', result);
+        }
+    } catch (error) {
+        document.getElementById('respuesta').innerHTML = `<div class="alert alert-danger">❌ Error al conectar con la API</div>`;
+        console.error('Error al conectar:', error);
+    }
+});
+</script>
+
+</body>
+</html>
