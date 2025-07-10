@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargar Producto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="mb-4">Agregar Producto</h1>
+
+    <form id="producto-form" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="codigo" class="form-label">Código</label>
+            <input type="text" class="form-control" id="codigo" name="codigo" required>
+        </div>
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" required>
+        </div>
+        <div class="mb-3">
+            <label for="stock" class="form-label">Stock</label>
+            <input type="number" class="form-control" id="stock" name="stock" required>
+        </div>
+        <div class="mb-3">
+            <label for="ubicacion" class="form-label">Ubicación</label>
+            <input type="text" class="form-control" id="ubicacion" name="ubicacion" required>
+        </div>
+        <div class="mb-3">
+            <label for="precio" class="form-label">Precio</label>
+            <input type="number" step="0.01" class="form-control" id="precio" name="precio" required>
+        </div>
+        <div class="mb-3">
+            <label for="costo" class="form-label">Costo</label>
+            <input type="number" step="0.01" class="form-control" id="costo" name="costo" required>
+        </div>
+        <div class="mb-3">
+            <label for="file" class="form-label">Imagen</label>
+            <input type="file" class="form-control" id="file" name="file" required>
+        </div>
+        <!-- 🔽 ESTE ES EL BOTÓN QUE ENVÍA -->
+        <button type="submit" class="btn btn-primary">Cargar</button>
+    </form>
+
+    <!-- Acá se muestra la respuesta -->
+    <div id="respuesta" class="mt-4"></div>
+</div>
+
+<script>
+document.getElementById('producto-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    try {
+        const response = await fetch('https://almacen-qr.onrender.com/productos/', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            document.getElementById('respuesta').innerHTML = `<div class="alert alert-success">✅ Producto guardado correctamente</div>`;
+            console.log('Producto creado:', result);
+        } else {
+            document.getElementById('respuesta').innerHTML = `<div class="alert alert-danger">❌ Error: ${JSON.stringify(result)}</div>`;
+            console.error('Error:', result);
+        }
+    } catch (error) {
+        document.getElementById('respuesta').innerHTML = `<div class="alert alert-danger">❌ Error al conectar con la API</div>`;
+        console.error('Error al conectar:', error);
+    }
+});
+</script>
+
+</body>
+</html>

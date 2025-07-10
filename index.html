@@ -3,76 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cargar Producto</title>
+    <title>Tienda Baby Chic</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div class="container mt-5">
-    <h1 class="mb-4">Agregar Producto</h1>
-
-    <form id="producto-form" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label for="codigo" class="form-label">Código</label>
-            <input type="text" class="form-control" id="codigo" name="codigo" required>
-        </div>
-        <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="nombre" name="nombre" required>
-        </div>
-        <div class="mb-3">
-            <label for="stock" class="form-label">Stock</label>
-            <input type="number" class="form-control" id="stock" name="stock" required>
-        </div>
-        <div class="mb-3">
-            <label for="ubicacion" class="form-label">Ubicación</label>
-            <input type="text" class="form-control" id="ubicacion" name="ubicacion" required>
-        </div>
-        <div class="mb-3">
-            <label for="precio" class="form-label">Precio</label>
-            <input type="number" step="0.01" class="form-control" id="precio" name="precio" required>
-        </div>
-        <div class="mb-3">
-            <label for="costo" class="form-label">Costo</label>
-            <input type="number" step="0.01" class="form-control" id="costo" name="costo" required>
-        </div>
-        <div class="mb-3">
-            <label for="file" class="form-label">Imagen</label>
-            <input type="file" class="form-control" id="file" name="file" required>
-        </div>
-        <!-- 🔽 ESTE ES EL BOTÓN QUE ENVÍA -->
-        <button type="submit" class="btn btn-primary">Cargar</button>
-    </form>
-
-    <!-- Acá se muestra la respuesta -->
-    <div id="respuesta" class="mt-4"></div>
+<div class="container my-5">
+    <h1 class="text-center mb-4">Tienda Baby Chic 👶</h1>
+    <div id="productos" class="row g-3">
+        <!-- Aquí se insertan los productos -->
+    </div>
 </div>
 
 <script>
-document.getElementById('producto-form').addEventListener('submit', async function (e) {
-    e.preventDefault();
-
-    const formData = new FormData(this);
-
+async function cargarProductos() {
     try {
-        const response = await fetch('https://almacen-qr.onrender.com/productos/', {
-            method: 'POST',
-            body: formData
+        const response = await fetch('https://almacen-qr.onrender.com/productos/');
+        const productos = await response.json();
+
+        const contenedor = document.getElementById('productos');
+        contenedor.innerHTML = '';
+
+        productos.forEach(producto => {
+            const card = `
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="card h-100">
+                        <img src="https://almacen-qr.onrender.com${producto.imagen}" class="card-img-top" alt="${producto.nombre}" onerror="this.src='https://via.placeholder.com/300x300?text=Sin+Imagen';">
+                        <div class="card-body">
+                            <h5 class="card-title">${producto.nombre}</h5>
+                            <p class="card-text mb-1"><strong>Precio:</strong> $${producto.precio}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            contenedor.insertAdjacentHTML('beforeend', card);
         });
-
-        const result = await response.json();
-
-        if (response.ok) {
-            document.getElementById('respuesta').innerHTML = `<div class="alert alert-success">✅ Producto guardado correctamente</div>`;
-            console.log('Producto creado:', result);
-        } else {
-            document.getElementById('respuesta').innerHTML = `<div class="alert alert-danger">❌ Error: ${JSON.stringify(result)}</div>`;
-            console.error('Error:', result);
-        }
     } catch (error) {
-        document.getElementById('respuesta').innerHTML = `<div class="alert alert-danger">❌ Error al conectar con la API</div>`;
-        console.error('Error al conectar:', error);
+        console.error('Error al cargar productos:', error);
+        document.getElementById('productos').innerHTML = `<p class="text-danger">Error al cargar los productos.</p>`;
     }
-});
+}
+
+cargarProductos();
 </script>
 
 </body>
