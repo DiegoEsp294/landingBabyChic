@@ -6,14 +6,34 @@
     <title>Tienda Baby Chic</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-<div class="container my-5">
-    <h1 class="text-center mb-4">Tienda Baby Chic 👶</h1>
+<body class="d-flex flex-column min-vh-100">
+
+<!-- 🔳 HEADER -->
+<header class="bg-dark text-white py-3">
+    <div class="container d-flex justify-content-between align-items-center">
+        <h1 class="h4 mb-0">Tienda Baby Chic 👶</h1>
+        <nav>
+            <a href="#" class="text-white me-3 text-decoration-none">Inicio</a>
+            <a href="#" class="text-white text-decoration-none">Contacto</a>
+        </nav>
+    </div>
+</header>
+
+<!-- ✅ CONTENIDO PRINCIPAL -->
+<main class="container my-5 flex-grow-1">
     <div id="productos" class="row g-3">
         <!-- Aquí se insertan los productos -->
     </div>
-</div>
+</main>
 
+<!-- 🔳 FOOTER -->
+<footer class="bg-dark text-white text-center py-3">
+    <div class="container">
+        <small>&copy; 2024 Tienda Baby Chic. Todos los derechos reservados.</small>
+    </div>
+</footer>
+
+<!-- ✅ SCRIPT -->
 <script>
 async function cargarProductos() {
     try {
@@ -30,7 +50,6 @@ async function cargarProductos() {
                         <img src="${producto.imagen ? 'https://almacen-qr.onrender.com' + producto.imagen : 'https://via.placeholder.com/300x300?text=Sin+Imagen'}"
                         class="card-img-top"
                         alt="${producto.nombre}">
-
                         <div class="card-body">
                             <h5 class="card-title">${producto.nombre}</h5>
                             <p class="card-text mb-1"><strong>Precio:</strong> $${producto.precio}</p>
