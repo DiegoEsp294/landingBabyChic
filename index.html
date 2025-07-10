@@ -27,7 +27,10 @@ async function cargarProductos() {
             const card = `
                 <div class="col-12 col-sm-6 col-lg-3">
                     <div class="card h-100">
-                        <img src="https://almacen-qr.onrender.com${producto.imagen}" class="card-img-top" alt="${producto.nombre}" onerror="this.src='https://via.placeholder.com/300x300?text=Sin+Imagen';">
+                        <img src="${producto.imagen ? 'https://almacen-qr.onrender.com' + producto.imagen : 'https://via.placeholder.com/300x300?text=Sin+Imagen'}"
+                        class="card-img-top"
+                        alt="${producto.nombre}">
+
                         <div class="card-body">
                             <h5 class="card-title">${producto.nombre}</h5>
                             <p class="card-text mb-1"><strong>Precio:</strong> $${producto.precio}</p>
